@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 import numpy as np
 strbck_direct = pd.read_csv('starb_directory.csv', sep=',')
 # I only want to analyse data for the United State, UK, Ireland and the remainder of the EU27 member states as its own region
@@ -26,3 +27,5 @@ strbck_IE = strbck_direct[strbck_direct['Country'] == 'IE']
 print(strbck_IE)
 strbck_RoE = strbck_direct[strbck_direct['Country'].isin(RoE)]
 print(strbck_RoE)
+
+

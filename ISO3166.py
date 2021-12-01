@@ -2,7 +2,7 @@
 # ISO3166 python dict 
 # oficial list in http://www.iso.org/iso/iso_3166_code_lists
 
-ISO3166 = {
+ISO3166_dict = {
 	'AF': 'AFGHANISTAN',
 	'AX': 'ÅLAND ISLANDS',
 	'AL': 'ALBANIA',
@@ -253,5 +253,3 @@ ISO3166 = {
 	'ZM': 'ZAMBIA',
 	'ZW': 'ZIMBABWE',
 }
-
-print(ISO3166['UNITED STATES'])
