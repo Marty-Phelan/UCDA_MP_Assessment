@@ -8,8 +8,8 @@ countries_world_prelim = pd.read_csv("countries_of_the_world.csv")
 # The first will contain the location data for all Starbucks stores in the US and Ireland in order to map.
 strbck_mapping = strbck_direct[(strbck_direct['Country'] == 'US') | (strbck_direct['Country'] == 'IE')]
 print(strbck_mapping.head())
-print(strbck_mapping.info())
-# The second will contain the statistical data such as number of stores per country and GDP that I will use to garner further insights.
+print(strbck_mapping.columns)
+# The second dataframe will contain the statistical data such as number of stores per country and GDP that I will use to garner further insights.
 store_no_rank = strbck_direct['Country'].value_counts()
 print(store_no_rank)
 print(type(store_no_rank))
@@ -23,9 +23,13 @@ print('Mean number of Starbucks per country: ', country_starbuck_count_df['No_St
 print('Standard Deviation: ', country_starbuck_count_df['No_Starbucks'].std())
 print(country_starbuck_count_df[country_starbuck_count_df.values == 'IE'])
 print(country_starbuck_count_df[country_starbuck_count_df['No_Starbucks'].values <= 20])
-# There is a very high std dev in the data and a large discrepancy between the median and mean. I am going to remove all countries with a number of stores below 10.
+# There is a very high std dev in the data and a large discrepancy between the median and mean.
+# I am going to remove all countries with a number of stores below 10.
 country_starbuck_merge1_df = country_starbuck_count_df[country_starbuck_count_df['No_Starbucks'] > 9]
 print(country_starbuck_merge1_df.info())
+print('Median number of Starbucks per country: ', country_starbuck_merge1_df['No_Starbucks'].median())
+print('Mean number of Starbucks per country: ', country_starbuck_merge1_df['No_Starbucks'].mean())
+print('Standard Deviation: ', country_starbuck_merge1_df['No_Starbucks'].std())
 #The first of my three merge sheets is now ready.
 print(countries_world_prelim.columns)
 print(countries_world_prelim.info)
