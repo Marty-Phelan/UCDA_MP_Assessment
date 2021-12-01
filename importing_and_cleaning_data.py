@@ -37,6 +37,8 @@ print(type(countries_world))
 print(countries_world['Country'].values)
 # There seems to be a space in each string that needs to be stripped away.
 countries_world['Country'] = countries_world['Country'].str.rstrip()
+# I later discovered a similar problem in 'Region'. For simplicity, I cleaned the data here.
+countries_world['Region'] = countries_world['Region'].str.rstrip()
 print(countries_world['Country'].values)
 #I will also creat a new column that adds an uppercase variation of each country name.
 for lab, row in countries_world.iterrows() :
@@ -66,7 +68,8 @@ for value in list(starbucks_country_fullnames['COUNTRY']) :
 print(countries_world_2['COUNTRY'].values)
 # 'KOREA, SOUTH', 'TAIWAN', 'RUSSIA', 'VIETNAM', 'BAHAMAS, THE'.
 # Now that I have the correct terms, I can change the names in my starbucks_country_fullnames list.
-starbucks_country_fullnames['COUNTRY'] = starbucks_country_fullnames['COUNTRY'].replace(["KOREA, REPUBLIC OF", "TAIWAN, PROVINCE OF CHINA", "RUSSIAN FEDERATION", "VIET NAM", "BAHAMAS"], ['KOREA, SOUTH', 'TAIWAN', 'RUSSIA', 'VIETNAM', 'BAHAMAS, THE'])
+starbucks_country_fullnames['COUNTRY'] = starbucks_country_fullnames['COUNTRY'].replace(["KOREA, REPUBLIC OF", "TAIWAN, PROVINCE OF CHINA", "RUSSIAN FEDERATION", "VIET NAM", "BAHAMAS"],
+                                                                                        ['KOREA, SOUTH', 'TAIWAN', 'RUSSIA', 'VIETNAM', 'BAHAMAS, THE'])
 for value in list(starbucks_country_fullnames['COUNTRY']) :
        if value not in list(countries_world_2['COUNTRY']) :
                print(value)
@@ -74,6 +77,22 @@ for value in list(starbucks_country_fullnames['COUNTRY']) :
               print('All Good')
 # I have verified that my two dataframes have been correctly matched. I can now complete my last merge.
 starbucks_country_analysis = starbucks_country_fullnames.merge(countries_world_2, on = 'COUNTRY', how = 'left')
+# I want to create some new columns: Area (sq. km), Pop. Density (per sq. km), GDP (€ per capita)
+starbucks_country_analysis["Area_sqkm"] = starbucks_country_analysis['Area (sq. mi.)'] * 2.58999
+starbucks_country_analysis['Pop_dens_sqkm'] = starbucks_country_analysis['Pop. Density (per sq. mi.)'] * 2.58999
+starbucks_country_analysis['GDP_€_percapita'] = starbucks_country_analysis['GDP ($ per capita)'] * 1.13
+# I also want to tidy the regions to make colour categorisation more manageable
+orig_regions= starbucks_country_analysis["Region"].values
+print(set(orig_regions))
+starbucks_country_analysis['Region'] = starbucks_country_analysis['Region'].replace(["ASIA (EX. NEAR EAST)", 'C.W. OF IND. STATES'],'ASIA')
+starbucks_country_analysis['Region'] = starbucks_country_analysis['Region'].replace(['LATIN AMER. & CARIB'],'SOUTH AMERICA')
+starbucks_country_analysis['Region'] = starbucks_country_analysis['Region'].replace(['WESTERN EUROPE', 'EASTERN EUROPE'],'EUROPE')
+Regions = starbucks_country_analysis["Region"].values
+print(set(Regions))
+for lab, row in starbucks_country_analysis.iterrows() :
+    starbucks_country_analysis.loc[lab, "Color"] = row["Region"]
+starbucks_country_analysis['Color'] = starbucks_country_analysis['Region'].replace(['NEAR EAST', 'NORTHERN AMERICA', 'ASIA', 'EUROPE', 'NORTHERN AFRICA', 'OCEANIA', 'SOUTH AMERICA'],
+                                                                                   ['darkorange', 'blue', 'red', 'green', 'maroon', 'mediumpurple', 'yellow'])
 print(starbucks_country_analysis.head())
 print(starbucks_country_analysis.info())
 # Both Dataframes are now available: strbck_mapping and starbucks_country_analysis.
